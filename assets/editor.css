@@ -1,0 +1,7 @@
+.ssc-panel { padding: 16px; }
+.ssc-panel .components-spinner { float: none; margin: 8px; }
+.ssc-count { font-weight: 600; margin-top: 16px; }
+.ssc-errors { margin: 0; }
+.ssc-errors li { border-top: 1px solid #dcdcde; padding: 10px 0; }
+.ssc-errors li span { display: block; color: #50575e; margin-top: 4px; }
+.ssc-errors li small { display: block; color: #646970; margin-top: 4px; }

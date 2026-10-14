@@ -8,7 +8,7 @@ A WordPress plugin that checks spelling in the post currently open in the Gutenb
 - Review possible misspellings, surrounding context, and up to three suggestions.
 - Check content locally in the browser. Post text is not sent to SiteSpellChecker.com.
 - Open a site-wide scan for the current site's domain from the editor or plugin settings.
-- Configure the SiteSpellChecker attribution link in the frontend footer under **Settings → Site Spell Checker**.
+- Optionally enable a SiteSpellChecker attribution link in the frontend footer under **Settings → Site Spell Checker**. It is off by default.
 
 The editor integration currently supports the Gutenberg block editor. It does not add a checker to the Classic Editor.
 
@@ -74,4 +74,4 @@ The edited post is read and checked in the browser. The dictionary files are ser
 
 ## License
 
-The plugin declares GPL-2.0-or-later in its main PHP file. The bundled [Typo.js library](https://github.com/cfinke/Typo.js) is BSD-3-Clause. The [Hunspell dictionary source](https://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/) includes separate SCOWL and Ispell notices; preserve the applicable upstream notices when redistributing the dictionary. Verify and bundle all applicable third-party notices before submitting to the WordPress.org Plugin Directory.
+The plugin declares GPL-2.0-or-later in its main PHP file; see [LICENSE](LICENSE). The bundled [Typo.js library](https://github.com/cfinke/Typo.js) is BSD-3-Clause, with its notice in `assets/LICENSE-typo.txt`. The bundled Hunspell files were sourced from Chromium's en_US Hunspell dictionary and have additional SCOWL, Ispell, and other attribution terms; see `assets/README_en_US.txt` for the upstream notice. Preserve these notices when redistributing the plugin.

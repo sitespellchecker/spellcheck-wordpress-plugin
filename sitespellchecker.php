@@ -8,6 +8,8 @@
  * Author URI: https://sitespellchecker.com/
  * License: GPL-2.0-or-later
  * Text Domain: site-spell-checker
+ * Requires at least: 6.0
+ * Requires PHP: 7.4
  */
 
 if (!defined('ABSPATH')) {
@@ -39,7 +41,7 @@ add_action('admin_menu', 'ssc_add_settings_page');
 
 function ssc_register_settings(): void
 {
-    register_setting('ssc_settings', 'ssc_show_credit', ['type' => 'boolean', 'sanitize_callback' => 'rest_sanitize_boolean', 'default' => 1]);
+    register_setting('ssc_settings', 'ssc_show_credit', ['type' => 'boolean', 'sanitize_callback' => 'rest_sanitize_boolean', 'default' => 0]);
 }
 add_action('admin_init', 'ssc_register_settings');
 
@@ -55,7 +57,8 @@ function ssc_render_settings_page(): void
         <p><a class="button button-primary" href="<?php echo esc_url('https://sitespellchecker.com/site-scans/checkout?domain=' . rawurlencode(wp_parse_url(home_url(), PHP_URL_HOST))); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Scan your entire website', 'site-spell-checker'); ?></a></p>
         <form action="options.php" method="post">
             <?php settings_fields('ssc_settings'); ?>
-            <label><input type="checkbox" name="ssc_show_credit" value="1" <?php checked((bool) get_option('ssc_show_credit', 1)); ?>>
+            <input type="hidden" name="ssc_show_credit" value="0">
+            <label><input type="checkbox" name="ssc_show_credit" value="1" <?php checked((bool) get_option('ssc_show_credit', 0)); ?>>
                 <?php esc_html_e('Show a small “Spell checked with Site Spell Checker” link in the site footer.', 'site-spell-checker'); ?></label>
             <?php submit_button(); ?>
         </form>
@@ -65,7 +68,7 @@ function ssc_render_settings_page(): void
 
 function ssc_footer_credit(): void
 {
-    if (is_admin() || !get_option('ssc_show_credit', 1)) {
+    if (is_admin() || !get_option('ssc_show_credit', 0)) {
         return;
     }
     echo '<p class="ssc-credit">Spell checked with <a href="https://sitespellchecker.com/">Site Spell Checker</a></p>';
@@ -74,7 +77,7 @@ add_action('wp_footer', 'ssc_footer_credit');
 
 function ssc_credit_styles(): void
 {
-    if (!is_admin() && get_option('ssc_show_credit', 1)) {
+    if (!is_admin() && get_option('ssc_show_credit', 0)) {
         echo '<style>.ssc-credit{display:block;margin-top:1em;font-size:.75em;opacity:.7}</style>';
     }
 }

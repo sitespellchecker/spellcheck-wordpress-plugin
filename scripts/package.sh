@@ -1,25 +1,16 @@
 #!/usr/bin/env bash
+# Build the WordPress.org release zip: one top-level folder named after the slug,
+# runtime files only.
 set -euo pipefail
-
-plugin_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-plugin_slug="$(basename "$plugin_dir")"
-version="$(sed -n 's/^ \* Version: //p' "$plugin_dir/sitespellchecker.php" | head -n 1)"
-output_dir="$(dirname "$plugin_dir")/dist"
-archive="$output_dir/site-spell-checker-${version}.zip"
-
-if [[ -z "$version" ]]; then
-  echo "Could not read plugin version from sitespellchecker.php" >&2
-  exit 1
-fi
-
-mkdir -p "$output_dir"
-rm -f "$archive"
-(
-  cd "$(dirname "$plugin_dir")"
-  zip -qr "$archive" "$plugin_slug" \
-    -x "$plugin_slug/.DS_Store" "$plugin_slug/**/.DS_Store" \
-    "$plugin_slug/scripts/*" \
-    "$plugin_slug/.git/*" "$plugin_slug/**/.git/*"
-)
-
-echo "Created $archive"
+slug="site-spell-checker"
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+version="$(sed -n 's/^ \* Version: *//p' "$root/$slug.php" | head -n 1)"
+out="${1:-$root/dist/$slug-$version.zip}"
+stage="$(mktemp -d)"
+mkdir -p "$stage/$slug/assets" "$(dirname "$out")"
+cp "$root/$slug.php" "$root/uninstall.php" "$root/readme.txt" "$root/LICENSE" "$stage/$slug/"
+cp "$root"/assets/{typo.js,tokenizer.js,editor.js,editor.css,en_US.aff,en_US.dic,LICENSE-typo.txt,README_en_US.txt} "$stage/$slug/assets/"
+rm -f "$out"
+(cd "$stage" && zip -qrX "$out" "$slug")
+rm -rf "$stage"
+echo "Created $out"

@@ -1,5 +1,5 @@
 === Site Spell Checker ===
-Contributors: sitespellchecker
+Contributors: abrudtkuhl
 Tags: spell check, spelling, proofreading, typos, block editor
 Requires at least: 6.0
 Tested up to: 7.1

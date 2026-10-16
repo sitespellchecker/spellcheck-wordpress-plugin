@@ -97,6 +97,8 @@
 		);
 	}
 
+	var saveQueue = Promise.resolve();
+
 	function CheckerPanel() {
 		var issuesState = useState( null );
 		var issues = issuesState[ 0 ];
@@ -137,17 +139,26 @@
 
 		function addToDictionary( word ) {
 			var key = Core.normalizeWord( word );
-			var next = Array.from( new Set( Array.from( siteIgnored ).concat( [ key ] ) ) );
-			wp.apiFetch( { path: '/wp/v2/settings', method: 'POST', data: { site_spell_checker_ignored_words: next } } )
-				.then( function ( response ) {
-					siteIgnored = new Set( response.site_spell_checker_ignored_words || next );
-					removeWord( word );
-					/* translators: %s: the word added to the site dictionary. */
-					setMessage( { status: 'success', text: sprintf( __( '"%s" added to the site dictionary.', 'site-spell-checker' ), key ) } );
-				} )
-				.catch( function () {
-					setMessage( { status: 'error', text: __( 'Could not save the word. You can still ignore it for this session.', 'site-spell-checker' ) } );
-				} );
+			// Saves replace the whole option, so run them one after another and build
+			// each payload from the dictionary returned by the previous save.
+			saveQueue = saveQueue.then( function () {
+				var next = Array.from( new Set( Array.from( siteIgnored ).concat( [ key ] ) ) );
+				return wp.apiFetch( { path: '/wp/v2/settings', method: 'POST', data: { site_spell_checker_ignored_words: next } } )
+					.then( function ( response ) {
+						var saved = Array.isArray( response && response.site_spell_checker_ignored_words ) ? response.site_spell_checker_ignored_words : [];
+						siteIgnored = new Set( saved.map( Core.normalizeWord ) );
+						if ( ! siteIgnored.has( key ) ) {
+							setMessage( { status: 'error', text: __( 'The word was not saved. Words longer than 64 characters are not accepted, and the dictionary holds at most 2,000 words. You can still ignore it for this session.', 'site-spell-checker' ) } );
+							return;
+						}
+						removeWord( word );
+						/* translators: %s: the word added to the site dictionary. */
+						setMessage( { status: 'success', text: sprintf( __( '"%s" added to the site dictionary.', 'site-spell-checker' ), key ) } );
+					} )
+					.catch( function () {
+						setMessage( { status: 'error', text: __( 'Could not save the word. You can still ignore it for this session.', 'site-spell-checker' ) } );
+					} );
+			} );
 		}
 
 		var count = issues ? issues.length : 0;

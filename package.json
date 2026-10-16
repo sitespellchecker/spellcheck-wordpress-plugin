@@ -1,0 +1,11 @@
+{
+  "name": "site-spell-checker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dev tooling for the Site Spell Checker WordPress plugin (not shipped).",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "test": "node --test tests/",
+    "perf": "node tests/perf.mjs"
+  }
+}

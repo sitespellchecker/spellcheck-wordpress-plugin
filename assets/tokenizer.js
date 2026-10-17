@@ -66,7 +66,11 @@
 				.replace(/<\/?(p|div|li|ul|ol|h[1-6]|blockquote|br|tr|td|th|figcaption|hr)\b[^>]*>/gi, '\n')
 				// Footnote markers (<sup>1</sup>, <sup><a href="#n">*</a></sup>) are not part of the word
 				// before them: joined, "recieve1" was dropped as a number and hid the typo.
-				.replace(/<sup\b[^>]*>(?:\s|<[^>]*>|[\d*\u2020\u2021\u00a7,\[\]()-])*<\/sup>/gi, ' ')
+				.replace(/<sup\b[^>]*>([\s\S]*?)<\/sup>/gi, function (m, inner) {
+					// Classify the decoded text, so &#49; or 1&nbsp; count as markers too.
+					var text = decodeEntities(inner.replace(/<[^>]*>/g, ''));
+					return /^[\s\u00a0\d*\u2020\u2021\u00a7,\[\]()-]*$/.test(text) ? ' ' : m;
+				})
 				.replace(/<\/?([a-z][a-z0-9-]*)\b[^>]*>/gi, function (m, tag) {
 					// Inline formatting tags do not break a word: hel<strong>lo</strong> is "hello".
 					return INLINE_TAGS.test(tag) ? '' : ' ';

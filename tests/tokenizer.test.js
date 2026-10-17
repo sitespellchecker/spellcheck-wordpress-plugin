@@ -93,4 +93,8 @@ test('keeps uppercase ETH and THORN entities uppercase', () => {
 test('does not join footnote markers to the word before them', () => {
   assert.deepEqual(words(htmlToText('<p>We recieve<sup class="fn"><a href="#note">1</a></sup> mail.</p>')), ['We', 'recieve', 'mail']);
   assert.deepEqual(words(htmlToText('<p>E = mc<sup>2</sup> and the 1<sup>st</sup> try</p>')), ['E', 'mc', 'and', 'the', 'try']);
+  for (const marker of ['&#49;', '&#x31;', '1&nbsp;', '<a href="#n">&#42;</a>']) {
+    assert.deepEqual(words(htmlToText(`<p>We recieve<sup><a href="#note">${marker}</a></sup> mail.</p>`)), ['We', 'recieve', 'mail'], marker);
+  }
+  assert.deepEqual(words(htmlToText('<p>The 2<sup>nd</sup> and x<sup>th</sup> power</p>')), ['The', 'and', 'xth', 'power']);
 });

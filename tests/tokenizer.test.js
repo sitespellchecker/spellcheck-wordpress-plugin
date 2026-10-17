@@ -97,4 +97,8 @@ test('does not join footnote markers to the word before them', () => {
     assert.deepEqual(words(htmlToText(`<p>We recieve<sup><a href="#note">${marker}</a></sup> mail.</p>`)), ['We', 'recieve', 'mail'], marker);
   }
   assert.deepEqual(words(htmlToText('<p>The 2<sup>nd</sup> and x<sup>th</sup> power</p>')), ['The', 'and', 'xth', 'power']);
+  // An empty superscript (or one holding only an empty link) is not a footnote marker and must not split the word.
+  for (const sup of ['<sup></sup>', '<sup><a href="#n"></a></sup>']) {
+    assert.deepEqual(words(htmlToText(`<p>hel${sup}lo world</p>`)), ['hello', 'world'], sup);
+  }
 });

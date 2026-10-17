@@ -82,3 +82,18 @@ test('the claims patterns catch past mistakes', () => {
     assert.ok((copy.match(CLAIMS[name]) || []).length > 0, `${name} should catch "${copy}"`);
   }
 });
+
+// Ops decision 2026-10-17: the readme said the plugin "collects no data" and "no data leaves your
+// browser", but the whole-site scan link passes the site's domain and UTM parameters when clicked.
+// The privacy copy must disclose exactly what the link carries, and not claim that nothing leaves.
+test('readme privacy copy discloses what the scan link passes', () => {
+  const readme = read('readme.txt');
+  const plugin = read('site-spell-checker.php');
+  const privacy = (/^= Privacy =\n([\s\S]*?)\n== /m.exec(readme) || [])[1] || '';
+  assert.doesNotMatch(readme, /collects no data|no data leaves/i, 'the scan link passes the domain; say "your content" instead');
+  const params = [...(/function site_spell_checker_scan_url[\s\S]*?array\(([\s\S]*?)\),\s*'https:/.exec(plugin) || [])[1].matchAll(/'([a-z_]+)'\s*=>/g)].map((m) => m[1]);
+  assert.ok(params.length >= 5, 'found the scan URL parameters');
+  for (const param of params) {
+    assert.ok(privacy.includes(`${param}=`), `Privacy section must mention the ${param} parameter the scan link passes`);
+  }
+});

@@ -17,7 +17,9 @@ test('every version number matches the plugin header', () => {
   assert.equal(readmeField('Stable tag'), version, 'readme.txt Stable tag');
   assert.equal(JSON.parse(read('package.json')).version, version, 'package.json version');
   assert.match(read('tests/wp/smoke.php'), new RegExp(`'${version.replace(/\./g, '\\.')}' === SITE_SPELL_CHECKER_VERSION`), 'tests/wp/smoke.php version check');
-  assert.match(read('readme.txt'), new RegExp(`^= ${version.replace(/\./g, '\\.')} =$`, 'm'), 'readme.txt changelog entry');
+  // Only the Changelog section counts (#3, Copilot): the Upgrade Notice has version headings too.
+  const changelog = (/^== Changelog ==\n([\s\S]*?)(?=^== |(?![\s\S]))/m.exec(read('readme.txt')) || [])[1] || '';
+  assert.equal((/^= (\d+\.\d+\.\d+) =$/m.exec(changelog) || [])[1], version, 'newest readme.txt Changelog entry');
 });
 
 test('readme requirements match the plugin header', () => {

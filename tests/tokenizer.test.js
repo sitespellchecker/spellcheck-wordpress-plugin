@@ -85,3 +85,12 @@ test('sentence boundary counts before any kept token', () => {
 	const t = Core.tokenize('NASA. Teh cat sat.').find((x) => x.word === 'Teh');
 	assert.ok(t.sentenceStart);
 });
+
+test('keeps uppercase ETH and THORN entities uppercase', () => {
+  assert.equal(htmlToText('Meet &THORN;&oacute;r and &ETH;&aacute;vid; &thorn;&eth;'), 'Meet \u00de\u00f3r and \u00d0\u00e1vid; \u00fe\u00f0');
+});
+
+test('does not join footnote markers to the word before them', () => {
+  assert.deepEqual(words(htmlToText('<p>We recieve<sup class="fn"><a href="#note">1</a></sup> mail.</p>')), ['We', 'recieve', 'mail']);
+  assert.deepEqual(words(htmlToText('<p>E = mc<sup>2</sup> and the 1<sup>st</sup> try</p>')), ['E', 'mc', 'and', 'the', 'try']);
+});

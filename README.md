@@ -1,6 +1,6 @@
 # Site Spell Checker for WordPress
 
-Free WordPress.org plugin (slug `site-spell-checker`). It adds a spell-check sidebar to the block editor that checks the post **title and content** in the browser, using [Typo.js](https://github.com/cfinke/Typo.js) and the SCOWL en_US Hunspell dictionary. It makes no outbound requests and has no telemetry or admin notices.
+Free WordPress.org plugin (slug `site-spell-checker`). It adds a spell-check sidebar to the block editor that checks the post **title and content** in the browser, using [Typo.js](https://github.com/cfinke/Typo.js) and the SCOWL en_US Hunspell dictionary. It makes no outbound requests and has no telemetry or admin notices. The only thing that reaches sitespellchecker.com is the whole-site scan link, and only when a user clicks it: the URL carries the site's domain and UTM parameters (see the readme.txt Privacy section).
 
 ## Features
 - Handles contractions and possessives with straight or curly apostrophes, and accented letters (an accented word passes when its plain spelling is valid).

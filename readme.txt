@@ -1,5 +1,5 @@
 === Site Spell Checker ===
-Contributors: sitespellchecker
+Contributors: abrudtkuhl
 Tags: spell check, spelling, proofreading, typos, block editor
 Requires at least: 6.0
 Tested up to: 7.1
@@ -8,13 +8,13 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Private spell checking for the block editor. Checks titles and content in your browser with a per-site dictionary. No data leaves your browser.
+Private spell checking for the block editor. Checks titles and content in your browser with a per-site dictionary. Your content stays in your browser.
 
 == Description ==
 
 Site Spell Checker adds a spelling panel to the block editor. Click **Check spelling** and it reviews the post title and content using an English (US) Hunspell dictionary, right in your browser.
 
-* **Private.** Your content is never sent to any server, including ours. There is no account, no API key and no tracking.
+* **Private.** Your content is never sent to any server, including ours. There is no account, no API key, no analytics and no tracking.
 * **Fewer false alarms.** Contractions and possessives (don't, it's, O'Brien, Sarah's) work with straight or curly apostrophes. Accented words (café, naïve) are accepted. Numbers, links, email addresses, code blocks and ALL-CAPS acronyms are skipped.
 * **Names stay quiet.** Capitalized words in the middle of a sentence are treated as names and skipped. You can turn this off.
 * **Per-site dictionary.** Add product names and jargon from the sidebar with **Add to dictionary**, or edit the list under Settings → Site Spell Checker. Use **Ignore** to hide a word just for this editing session.
@@ -22,11 +22,13 @@ Site Spell Checker adds a spelling panel to the block editor. Click **Check spel
 
 = Need to check your whole site? =
 
-The plugin checks one post at a time. If you want every page checked at once, the separate paid service at [sitespellchecker.com](https://sitespellchecker.com/) crawls your public site and sends you a report. The plugin only links to it. Every plugin feature works without it.
+The plugin checks one post at a time. If you want every page checked at once, the separate paid service at [sitespellchecker.com](https://sitespellchecker.com/) crawls your public site and sends you a report. The plugin only links to it (see Privacy for what the link passes). Every plugin feature works without it.
 
 = Privacy =
 
-The plugin makes no external HTTP requests and collects no data. Spell checking runs in JavaScript in your browser. The only requests are for the plugin's own dictionary files on your site and, when an administrator uses **Add to dictionary**, the WordPress REST API on your own site.
+The plugin makes no external HTTP requests, has no analytics or telemetry, and never sends your content anywhere. Spell checking runs in JavaScript in your browser. The only requests are for the plugin's own dictionary files on your site and, when an administrator uses **Add to dictionary**, the WordPress REST API on your own site.
+
+If you click the **Scan every page of your site** link (in the editor sidebar and on the settings page), your browser opens sitespellchecker.com with your site's domain (for example `domain=example.com`) and attribution parameters (`ref=wp-plugin`, `utm_source=wordpress`, `utm_medium=plugin`, `utm_campaign=editor-sidebar` or `settings`) in the URL. Nothing is sent unless you click it, and no post content is included. sitespellchecker.com's privacy policy applies to that visit.
 
 == Installation ==
 
@@ -39,7 +41,7 @@ The plugin makes no external HTTP requests and collects no data. Spell checking 
 
 = Does this plugin send my content anywhere? =
 
-No. Checking happens entirely in your browser, and no data leaves it. The plugin makes no requests to sitespellchecker.com or any other third-party service, and it has no analytics or telemetry.
+No. Checking happens entirely in your browser, and your content never leaves it. The plugin makes no requests to sitespellchecker.com or any other third-party service, and it has no analytics or telemetry. The one exception is a link you choose to click: **Scan every page of your site** opens sitespellchecker.com with your site's domain and UTM parameters in the URL (see Privacy).
 
 = Which languages are supported? =
 

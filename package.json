@@ -5,7 +5,7 @@
   "description": "Dev tooling for the Site Spell Checker WordPress plugin (not shipped).",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "test": "node --test tests/",
+    "test": "node --test tests/*.test.js",
     "perf": "node tests/perf.mjs"
   }
 }

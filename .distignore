@@ -10,3 +10,6 @@
 package.json
 package-lock.json
 README.md
+/phpcs.xml.dist
+AGENTS.md
+CLAUDE.md

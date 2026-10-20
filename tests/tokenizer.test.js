@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { tokenize, htmlToText } = require('../assets/tokenizer.js');
+const Core = require('../assets/tokenizer.js');
 
 const words = (text, opts) => tokenize(text, opts).map((t) => t.word);
 
@@ -55,4 +56,49 @@ test('rankSuggestions prefers missing letters and transpositions, dedupes case',
   assert.equal(rankSuggestions('recieve', ['relieve', 'receive', 'recipe', 'recite'])[0], 'receive');
   assert.deepEqual(rankSuggestions('definately', ['definitely', 'defiantly', 'Definitely', 'delicately']), ['definitely', 'defiantly', 'delicately']);
   assert.equal(rankSuggestions('Begginers', ['Beginners', 'Legginess'])[0], 'Beginners');
+});
+
+test('invalid numeric entities do not throw', () => {
+	assert.doesNotThrow(() => Core.htmlToText('a &#1114112; b &#xD800; c'));
+	assert.match(Core.htmlToText('x&#1114112;y'), /x\uFFFDy/);
+});
+
+test('named accents decode and inline tags keep words whole', () => {
+	assert.equal(Core.htmlToText('caf&eacute;').trim(), 'café');
+	assert.equal(Core.htmlToText('<p>hel<strong>lo</strong></p>').trim(), 'hello');
+	assert.match(Core.htmlToText('<p>one</p><p>two</p>'), /one\s+two/);
+});
+
+test('URL trailing punctuation keeps the sentence boundary and offsets', () => {
+	const text = 'See https://example.com. Teh cat sat.';
+	const t = Core.tokenize(text).find((x) => x.word === 'Teh');
+	assert.ok(t && t.sentenceStart);
+	assert.equal(text.slice(t.index, t.index + 3), 'Teh');
+});
+
+test('domain followed by a comma is excluded', () => {
+	const words = Core.tokenize('Visit exmple.org, today').map((x) => x.word);
+	assert.deepEqual(words, ['Visit', 'today']);
+});
+
+test('sentence boundary counts before any kept token', () => {
+	const t = Core.tokenize('NASA. Teh cat sat.').find((x) => x.word === 'Teh');
+	assert.ok(t.sentenceStart);
+});
+
+test('keeps uppercase ETH and THORN entities uppercase', () => {
+  assert.equal(htmlToText('Meet &THORN;&oacute;r and &ETH;&aacute;vid; &thorn;&eth;'), 'Meet \u00de\u00f3r and \u00d0\u00e1vid; \u00fe\u00f0');
+});
+
+test('does not join footnote markers to the word before them', () => {
+  assert.deepEqual(words(htmlToText('<p>We recieve<sup class="fn"><a href="#note">1</a></sup> mail.</p>')), ['We', 'recieve', 'mail']);
+  assert.deepEqual(words(htmlToText('<p>E = mc<sup>2</sup> and the 1<sup>st</sup> try</p>')), ['E', 'mc', 'and', 'the', 'try']);
+  for (const marker of ['&#49;', '&#x31;', '1&nbsp;', '<a href="#n">&#42;</a>']) {
+    assert.deepEqual(words(htmlToText(`<p>We recieve<sup><a href="#note">${marker}</a></sup> mail.</p>`)), ['We', 'recieve', 'mail'], marker);
+  }
+  assert.deepEqual(words(htmlToText('<p>The 2<sup>nd</sup> and x<sup>th</sup> power</p>')), ['The', 'and', 'xth', 'power']);
+  // An empty superscript (or one holding only an empty link) is not a footnote marker and must not split the word.
+  for (const sup of ['<sup></sup>', '<sup><a href="#n"></a></sup>']) {
+    assert.deepEqual(words(htmlToText(`<p>hel${sup}lo world</p>`)), ['hello', 'world'], sup);
+  }
 });

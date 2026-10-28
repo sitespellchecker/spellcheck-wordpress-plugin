@@ -88,7 +88,15 @@ Deleting the plugin removes all of its settings, including the site dictionary.
 = 1.0.0 =
 Initial release.
 
+== Source code ==
+
+The plugin is developed in a public repository:
+
+https://github.com/sitespellchecker/spellcheck-wordpress-plugin
+
+`assets/tokenizer.js` and `assets/editor.js` are first-party JavaScript. Both files are unminified source and are shipped as written. There is no compile, minify, or bundler step for them. Packaging (see `scripts/package.sh` in the repository) copies those files into the release zip unchanged.
+
 == Third-party libraries ==
 
-* [Typo.js](https://github.com/cfinke/Typo.js) by Christopher Finke, Modified BSD License (GPL-compatible). Included unminified in `assets/typo.js`. License: `assets/LICENSE-typo.txt`.
-* en_US Hunspell dictionary from [SCOWL](http://wordlist.aspell.net/) by Kevin Atkinson and contributors, under a permissive MIT/BSD-style license (GPL-compatible). Files: `assets/en_US.aff` and `assets/en_US.dic`. License and credits: `assets/README_en_US.txt`.
+* [Typo.js](https://github.com/cfinke/Typo.js) by Christopher Finke, Modified BSD License (GPL-compatible). Included unminified, as the upstream source, in `assets/typo.js`. This plugin does not build or minify it. License: `assets/LICENSE-typo.txt`.
+* en_US Hunspell dictionary from [SCOWL](http://wordlist.aspell.net/) by Kevin Atkinson and contributors, under a permissive MIT/BSD-style license (GPL-compatible). Files: `assets/en_US.aff` and `assets/en_US.dic`. These are dictionary data files, not generated code. License and credits: `assets/README_en_US.txt`.

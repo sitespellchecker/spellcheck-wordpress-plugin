@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Site Spell Checker
- * Plugin URI:        https://sitespellchecker.com/
+ * Plugin URI:        https://github.com/sitespellchecker/spellcheck-wordpress-plugin
  * Description:       Check spelling in the block editor, privately in your browser, with a per-site dictionary. Nothing is sent to any server.
  * Version:           1.0.0
  * Requires at least: 6.0

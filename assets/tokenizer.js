@@ -8,6 +8,9 @@
  * often Title Case), unless the same capitalized word also appears
  * mid-sentence elsewhere in the text (a strong signal it is a name).
  *
+ * This file is first-party source and is shipped as written. It is not
+ * minified, compiled, or produced by a build step.
+ *
  * @license GPL-2.0-or-later
  */
 (function (root, factory) {
@@ -19,9 +22,50 @@
 })(typeof self !== 'undefined' ? self : this, function () {
 	'use strict';
 
-	var ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', rsquo: '\u2019', lsquo: '\u2018', rdquo: '\u201d', ldquo: '\u201c', ndash: '\u2013', mdash: '\u2014', hellip: '\u2026', copy: '\u00a9', reg: '\u00ae', trade: '\u2122', laquo: '\u00ab', raquo: '\u00bb', shy: '\u00ad', szlig: '\u00df', aelig: '\u00e6', AElig: '\u00c6', oslash: '\u00f8', Oslash: '\u00d8', aring: '\u00e5', Aring: '\u00c5', ccedil: '\u00e7', Ccedil: '\u00c7', ntilde: '\u00f1', Ntilde: '\u00d1', eth: '\u00f0', ETH: '\u00d0', thorn: '\u00fe', THORN: '\u00de' };
+	var ENTITIES = {
+		amp: '&',
+		lt: '<',
+		gt: '>',
+		quot: '"',
+		apos: "'",
+		nbsp: ' ',
+		rsquo: '\u2019',
+		lsquo: '\u2018',
+		rdquo: '\u201d',
+		ldquo: '\u201c',
+		ndash: '\u2013',
+		mdash: '\u2014',
+		hellip: '\u2026',
+		copy: '\u00a9',
+		reg: '\u00ae',
+		trade: '\u2122',
+		laquo: '\u00ab',
+		raquo: '\u00bb',
+		shy: '\u00ad',
+		szlig: '\u00df',
+		aelig: '\u00e6',
+		AElig: '\u00c6',
+		oslash: '\u00f8',
+		Oslash: '\u00d8',
+		aring: '\u00e5',
+		Aring: '\u00c5',
+		ccedil: '\u00e7',
+		Ccedil: '\u00c7',
+		ntilde: '\u00f1',
+		Ntilde: '\u00d1',
+		eth: '\u00f0',
+		ETH: '\u00d0',
+		thorn: '\u00fe',
+		THORN: '\u00de'
+	};
 	// Accented Latin letters: &eacute; &Uuml; &acirc; and so on.
-	var ACCENTS = { acute: '\u0301', grave: '\u0300', circ: '\u0302', uml: '\u0308', tilde: '\u0303' };
+	var ACCENTS = {
+		acute: '\u0301',
+		grave: '\u0300',
+		circ: '\u0302',
+		uml: '\u0308',
+		tilde: '\u0303'
+	};
 	var INLINE_TAGS = /^(?:a|abbr|b|bdi|bdo|cite|del|dfn|em|i|ins|mark|q|s|small|span|strong|sub|sup|time|u)$/i;
 	var TOKEN = /[\p{L}\p{M}\p{N}_]+(?:['\u2019][\p{L}\p{M}\p{N}_]+)*/gu;
 	var CLITIC = /'(?:s|d|ll|ve|re|m)$/i;
@@ -270,5 +314,11 @@
 		return issues;
 	}
 
-	return { htmlToText: htmlToText, tokenize: tokenize, findIssues: findIssues, rankSuggestions: rankSuggestions, normalizeWord: normalizeWord };
+	return {
+		htmlToText: htmlToText,
+		tokenize: tokenize,
+		findIssues: findIssues,
+		rankSuggestions: rankSuggestions,
+		normalizeWord: normalizeWord
+	};
 });

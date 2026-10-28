@@ -4,6 +4,9 @@
  * plugin's own dictionary files and, when an administrator clicks
  * "Add to dictionary", the site's own REST settings endpoint.
  *
+ * This file is first-party source and is shipped as written. It is not
+ * minified, compiled, or produced by a build step.
+ *
  * @license GPL-2.0-or-later
  */
 ( function ( wp, config, Core ) {
